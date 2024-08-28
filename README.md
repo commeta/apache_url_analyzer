@@ -1,5 +1,7 @@
 # Apache HTTP Request Analyzer for Websites
 
+[На Русском](README_RU.md)
+
 This Python script analyzes Apache configuration files for websites to extract unique URLs for specific HTTP methods (POST, DELETE, PUT, HEAD). It generates separate files with “domain-URL” pairs for each method, allowing you to analyze traffic patterns and identify potential security issues.
 Features:
 
