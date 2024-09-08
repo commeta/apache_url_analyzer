@@ -21,18 +21,18 @@ Features:
 - - /var/log/httpd/sites_put.log: Unique URLs for PUT requests.
 - - /var/log/httpd/sites_head.log: Unique URLs for HEAD requests.
 
-## Notes:
+### Notes:
 
 - The script may require superuser privileges to access Apache configuration files.
 - You can change the paths to the output files by modifying the corresponding variables in the script.
 
-## Benefits:
+### Benefits:
 
 - Security Analysis: Analyze potential malicious activity by identifying unusual URLs for specific HTTP methods.
 - Traffic Analysis: Understand traffic patterns and identify popular website endpoints.
 - Website Optimization: Analyze URL usage to improve website performance and resource allocation.
 
-## Example Output:
+### Example Output:
 
 /var/log/httpd/sites_post.log:
 ```
