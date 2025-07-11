@@ -1,43 +1,135 @@
-# Apache HTTP Request Analyzer for Websites
+# HTTP request analyzer for Apache sites
 
-[На Русском](README_RU.md)
+[Русский](README_RU.md) | [English](README.md)
 
-This Python script analyzes Apache configuration files for websites to extract unique URLs for specific HTTP methods (POST, DELETE, PUT, HEAD). It generates separate files with “domain-URL” pairs for each method, allowing you to analyze traffic patterns and identify potential security issues.
-Features:
+Modern Python script for analyzing Apache configuration files to extract unique URLs for specific HTTP methods. Provides high performance, reliability, and flexible configuration.
 
-- Apache Configuration File Analysis: The script scans Apache configuration files to locate CustomLog directives, which define access log files.
-- URL Extraction: The script analyzes log files to extract URLs associated with specific HTTP methods.
-- Domain Determination: The script determines the domain name for each URL based on the log file name.
-- Duplicate Removal: The script removes duplicate URLs from the output files.
-- Output Sorting: The script outputs sorted lists of unique URLs.
+## ✨ Features
 
-## Usage:
+### 🚀 Performance
+- **Multithreaded processing** - parallel processing of log files
+- **Efficient memory usage** - stream processing of large files
+- **Compiled regular expressions** - optimized parsing
+- **Smart validation** - prevention of processing invalid data
 
-- Ensure Apache Log Files are Configured: Verify that your Apache websites are configured to use the CustomLog directive to record access logs.
-- Install Python 3: The script requires Python 3.x.
-- Run the Script: Run the script using the command python3 http_requests.py. This will create four output files:
-- - /var/log/httpd/sites_post.log: Unique URLs for POST requests.
-- - /var/log/httpd/sites_delete.log: Unique URLs for DELETE requests.
-- - /var/log/httpd/sites_put.log: Unique URLs for PUT requests.
-- - /var/log/httpd/sites_head.log: Unique URLs for HEAD requests.
+### 🛡️ Security and reliability
+- **Safe file handling** - using pathlib
+- **Error handling** - comprehensive error handling
+- **Input validation** - checking domains and URLs
+- **Protection against path traversal** - filtering malicious paths
 
-### Notes:
+### 📊 Advanced features
+- **Configurable parameters** - configuration via command line arguments
+- **Detailed logging** - monitoring of analysis process
+- **Results statistics** - detailed information about found URLs
+- **Unicode support** - correct handling of international domains
 
-- The script may require superuser privileges to access Apache configuration files.
-- You can change the paths to the output files by modifying the corresponding variables in the script.
+## 🔧 System requirements
 
-### Benefits:
+- Python 3.7+
+- Permission to read Apache configuration files
+- Permission to read Apache log files
+- Permission to write to output directory
 
-- Security Analysis: Analyze potential malicious activity by identifying unusual URLs for specific HTTP methods.
-- Traffic Analysis: Understand traffic patterns and identify popular website endpoints.
-- Website Optimization: Analyze URL usage to improve website performance and resource allocation.
+## 📦 Installation
 
-### Example Output:
-
-/var/log/httpd/sites_post.log:
+```bash
+# Cloning the repository
+git clone https://github.com/commeta/apache_url_analyzer
+cd apache-url-analyzer
 ```
-example.com /api/create_user
-example.com /admin/update_settings
+
+## 🚀 Usage
+
+### Basic usage
+
+```bash
+# Run with default parameters
+python3 apache_url_analyzer.py
+
+# Run with superuser privileges (if required)
+sudo python3 apache_url_analyzer.py
 ```
 
-This script provides a valuable tool for analyzing Apache configuration files to obtain information about traffic and URLs used on your websites.
+### Advanced options
+
+```bash
+# Configure paths and parameters
+python3 apache_url_analyzer.py \
+    --config-glob "/etc/apache2/sites-available/*.conf" \
+    --output-dir "/var/log/apache2" \
+    --methods POST PUT DELETE PATCH \
+    --max-workers 8 \
+    --log-level DEBUG
+
+# Analyze only specific methods
+python3 apache_url_analyzer.py --methods POST DELETE
+
+# Increase number of threads for large servers
+python3 apache_url_analyzer.py --max-workers 16
+```
+
+## 📋 Command line parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `--config-glob` | Glob pattern for searching Apache configuration files | `/etc/apache2/sites-enabled/*/*.conf` |
+| `--output-dir` | Directory for saving results | `/var/log/apache2` |
+| `--methods` | HTTP methods for analysis | `POST DELETE PUT HEAD` |
+| `--max-workers` | Maximum number of threads | `4` |
+| `--log-level` | Logging level | `INFO` |
+
+## 📁 Output file structure
+
+The script creates separate files for each HTTP method:
+
+```
+/var/log/apache2/
+├── sites_post.log     # URLs for POST requests
+├── sites_delete.log   # URLs for DELETE requests
+├── sites_put.log      # URLs for PUT requests
+└── sites_head.log     # URLs for HEAD requests
+```
+
+### Output data format
+
+```
+example.com /api/users
+example.com /api/posts
+subdomain.example.com /admin/settings
+another-site.com /webhook/github
+```
+
+## 🔍 Usage examples
+
+### Security analysis
+
+```bash
+# Search for potentially dangerous POST requests
+python3 apache_url_analyzer.py --methods POST
+grep -i "admin\|upload\|exec\|cmd" /var/log/apache2/sites_post.log
+```
+
+### API monitoring
+
+```bash
+# Analyze API endpoints
+python3 apache_url_analyzer.py --methods POST PUT DELETE PATCH
+```
+
+### Configuration debugging
+
+```bash
+# Detailed analysis with debug info
+python3 apache_url_analyzer.py --log-level DEBUG
+```
+
+## Optimization
+
+```bash
+# For large servers
+python3 apache_url_analyzer.py --max-workers 16
+
+# For systems with limited memory
+python3 apache_url_analyzer.py --max-workers 2
+```
